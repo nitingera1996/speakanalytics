@@ -12,6 +12,7 @@ import pandas as pd
 BING_API_KEY="b0b8be2625cd44a383c0229c32dd2372"
 WIT_API_KEY="C7KCW2EC7YANHHBTWYH5WCY54SPFXGGT"
 API_CLIENT_ACESS_TOKEN="2f0e15a44a4a46039ed87cfa479cf507"
+
 # In[ ]:
 
 def speak(text):
@@ -30,7 +31,7 @@ def listen():
     try:
         # return recognizer.recognize_api(audio,client_access_token=API_CLIENT_ACESS_TOKEN)
         return recognizer.recognize_wit(audio,key=WIT_API_KEY)
-        return recognizer.recognize_google(audio)
+        #return recognizer.recognize_google(audio)
         # or: return recognizer.recognize_google(audio)
     except speech_recognition.UnknownValueError:
         print("Could not understand audio")
@@ -44,7 +45,7 @@ def listen():
 # In[ ]:
 
 recognizer = speech_recognition.Recognizer()
-
+    
 
 # In[ ]:
 chrome_path = '/usr/bin/google-chrome %s'
@@ -58,6 +59,14 @@ def search_google(query):
     final_url = base_url + quote(query)
     webbrowser.get(chrome_path).open(final_url, new=new)
 
+def load_data(data_path):
+    data = pd.read_csv(data_path)
+    print "loading data...."
+    print "No of rows in file: ",data.shape[0]
+    print "No of columns in file: ",data.shape[1]
+    print "This is how data looks like"
+    print data.head(n=2)
+
 
 # In[ ]:
 def process_cmd(inp):
@@ -66,9 +75,11 @@ def process_cmd(inp):
     if(cmd_list[0]=="open" and cmd_list[1]=="file"):
         file_name = str(''.join(cmd_list[2:]))+".csv"
         file_path  = file_loc+file_name
-        file_data = pd.read_csv(file_path);
-        print file_path
-        print file_data.head()
+        load_data(file_path)
+
+    if(cmd_list[0]=="search"):
+        query=str(''.join(cmd_list[1:]))
+        search_google(query)
 
 play=1
 while(play):
@@ -79,16 +90,16 @@ while(play):
 
     try:
         print input1
-        #process_cmd(input1)
-        if input1[:4]=="open":
-            url="http://"+input1[5:]+".com"
-            print url
-            webbrowser.get(chrome_path).open(url)
-        elif input1[:6]=="search":
-            query=input1[7:]
-            search_google(query)
-        elif input1[:5]=="close":
-            play=0
+        process_cmd(input1);
+        # if input1[:4]=="open":
+        #     url="http://"+input1[5:]+".com"
+        #     print url
+        #     webbrowser.get(chrome_path).open(url)
+        # elif input1[:6]=="search":
+        #     query=input1[7:]
+        #     search_google(query)
+        # elif input1[:5]=="close":
+        #     play=0
             
     except:
         pass
