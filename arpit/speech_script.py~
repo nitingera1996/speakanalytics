@@ -9,9 +9,6 @@ from urllib import quote
 import csv
 import pandas as pd
 
-BING_API_KEY="b0b8be2625cd44a383c0229c32dd2372"
-WIT_API_KEY="C7KCW2EC7YANHHBTWYH5WCY54SPFXGGT"
-API_CLIENT_ACESS_TOKEN="2f0e15a44a4a46039ed87cfa479cf507"
 # In[ ]:
 
 def speak(text):
@@ -28,8 +25,6 @@ def listen():
         audio = recognizer.listen(source)
 
     try:
-        # return recognizer.recognize_api(audio,client_access_token=API_CLIENT_ACESS_TOKEN)
-        return recognizer.recognize_wit(audio,key=WIT_API_KEY)
         return recognizer.recognize_google(audio)
         # or: return recognizer.recognize_google(audio)
     except speech_recognition.UnknownValueError:
@@ -79,16 +74,16 @@ while(play):
 
     try:
         print input1
-        #process_cmd(input1)
-        if input1[:4]=="open":
-            url="http://"+input1[5:]+".com"
-            print url
-            webbrowser.get(chrome_path).open(url)
-        elif input1[:6]=="search":
-            query=input1[7:]
-            search_google(query)
-        elif input1[:5]=="close":
-            play=0
+        process_cmd(input1);
+        # if input1[:4]=="open":
+        #     url="http://"+input1[5:]+".com"
+        #     print url
+        #     webbrowser.get(chrome_path).open(url)
+        # elif input1[:6]=="search":
+        #     query=input1[7:]
+        #     search_google(query)
+        # elif input1[:5]=="close":
+        #     play=0
             
     except:
         pass
